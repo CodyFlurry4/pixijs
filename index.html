@@ -1,81 +1,13 @@
-<p>Here</p>
-<script src="https://pixijs.download/release/pixi.js"></script>
-<script>
- 
-//     document.body.appendChild(app.view);
-//     let sprite = PIXI.Sprite.from('sample.png');
-//     sprite.position.x = (app.screen.width/2) - (sprite.width/2);
-//     sprite.position.y = (app.screen.height/2) - (sprite.height/2);
-//     app.stage.addChild(sprite);
-
-//     var graphics = new PIXI.Graphics();
-
-//     graphics.lineStyle(2, 0xFEEB77, 1);
-//     // Draw a circle
-//     graphics.drawCircle(60, 185, 40); // drawCircle(x, y, radius)
-
-//     // Applies fill to lines and shapes since the last call to beginFill.
-//     graphics.endFill();
-
-
-//     app.stage.addChild(graphics);
-
-//     let elapsed = 0.0;
-//   // Tell our application's ticker to run a new callback every frame, passing
-//   // in the amount of time that has passed since the last tick
-//   app.ticker.add((delta) => {
-//     elapsed += delta;
-//   });
-
- 
-
-const app = new PIXI.Application({ backgroundAlpha: 0,resizeTo: window });
-
-document.body.appendChild(app.view);
-
-leftArmTexture = new PIXI.Texture.fromImage('Left Arm.svg', undefined, undefined, 1.0);
-const leftArm = new PIXI.Sprite(leftArmTexture)
-
-
-// Standard Sprite Button
-leftArm.position.set(500, 200);
-leftArm.cursor = 'pointer';
-leftArm.eventMode = 'static';
-
-leftArm
-    .on('pointerdown', onClick, leftArm)
-    .on('pointerover', onPointerOver, leftArm)
-    .on('pointerout', onPointerOut, leftArm);
-
-
-const style = new PIXI.TextStyle({ fill: '#ffffff' });
-
-const text1 = new PIXI.Text('Standard', style);
-
-text1.x = leftArm.x + 25;
-text1.y = leftArm.y + 170;
-
-// Add to stage
-var outline = app.stage.addChild(
-    leftArm,
-    text1
-);
-
-outline.scale.set(1)
-
-function onClick()
-{
-    this.tint = 0xff0000;
-}
-
-function onPointerOver()
-{
-    this.tint = 0x666666;
-}
-
-function onPointerOut()
-{
-    this.tint = 0xFFFFFF;
-}
-
-</script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
