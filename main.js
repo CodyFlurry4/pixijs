@@ -4,7 +4,7 @@ import headNeckSVG from '/HeadNeck.svg'
 import chestSVG from '/Chest.svg'
 import rightArmSVG from '/Right Arm.svg'
 import leftArmSVG from '/Left Arm.svg'
-import adominSVG from '/Abdominal and Pelvic-cropped.svg'
+import abdomenSVG from '/Abdominal and Pelvic-cropped.svg'
 import legsSVG from '/Legs.svg'
 
 const app = new PIXI.Application({
@@ -21,72 +21,93 @@ const stageWidth = app.screen.width;
 // Make sure stage covers the whole scene
 app.stage.hitArea = app.screen;
 
-const outlineSprites = []
+
 //outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(outlineSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(headNeckSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(chestSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(rightArmSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(leftArmSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(adominSVG)))
-outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(legsSVG)))
+// headNeck = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(headNeckSVG)))
+// chest = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(chestSVG)))
+// rightArm = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(rightArmSVG)))
+// leftArm = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(leftArmSVG)))
+// abdomen = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(abdomenSVG)))
+// legs = outlineSprites.push(new PIXI.Sprite(PIXI.Texture.from(legsSVG)))
+
+const outlineSprites = [
+    {
+        name: 'headNeck',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(headNeckSVG)),
+        positionX: 685,
+        positionY: 240,
+        scale:.8
+    },
+    {
+        name: 'chest',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(chestSVG)),
+        positionX: 685,
+        positionY: 360,
+        scale:.84
+    },  
+    {
+        name: 'rightArm',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(rightArmSVG)),
+        positionX: 780,
+        positionY: 425,
+        scale:1.7
+    },
+    {
+        name: 'leftArm',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(leftArmSVG)),
+        positionX: 589,
+        positionY: 425,
+        scale:1.7
+    },
+    {
+        name: 'abdomen',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(abdomenSVG)),
+        positionX: 684.5,
+        positionY: 500,
+        scale:1.25
+    },
+    {
+        name: 'legs',
+        svg:  new PIXI.Sprite(PIXI.Texture.from(legsSVG)),
+        positionX: 685,
+        positionY: 690,
+        scale:1.9
+    },
+];
+
+
 
 
 
 const highlightOnOver = (e) => {
-    e.currentTarget.scale.set(2)
+   e.sprite.scale.set(1.2*e.initialScale)
 }
 //when highlighted it goes back to this scaling value I am trying to figure out how to
 //use the scaling value of the body part instead here.
 const unhighlight = (e) => {
-    e.currentTarget.scale.set(1)
+    e.sprite.scale.set(e.initialScale)
 }
-
-const buttonPositions = [
-    685, 240,
-    685, 360,
-    780, 425,
-    589, 425,
-    684.5, 500,
-    685, 690
-];
-
-//I had to manually set the scaling values because when getting the box off the svg 
-//they came out different sizes
-const scale = [
-    .8, 
-    .84,
-    1.7,
-    1.7,
-    1.25,
-    1.9
-];
-
-//    outlineSprites[0].scale.set(1); 
-//    outlineSprites[1].scale.set(.82); 
-//    outlineSprites[2].scale.set(1.2); 
-//    outlineSprites[3].scale.set(1.2); 
-//    outlineSprites[4].scale.set(1.2); 
-//    outlineSprites[5].scale.set(1.89); 
-   
-outlineSprites.forEach((x, i=0) => {
-    x.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-    x.scale.set(scale[i]);
-    x.anchor.set(0.5);
+  
+outlineSprites.forEach((x) => {
+    const button = x.svg
+    button.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+    button.scale.set(x.scale);
+    button.anchor.set(0.5);
     
-    x.x = buttonPositions[i * 2];
-    x.y = buttonPositions[i * 2 + 1];
-    i++;
+    button.x = x.positionX;
+    button.y = x.positionY;
+
     
     // Opt-in to interactivity
-    x.eventMode = 'static';
+    button.eventMode = 'static';
     
     // Shows hand cursor
-    x.cursor = 'pointer';
+    button.cursor = 'pointer';
     
     
-    x
-    .on('pointerover', highlightOnOver)
-    .on('pointerout', unhighlight);
-    app.stage.addChild(x);
+    button
+    .on('pointerover', () => highlightOnOver({sprite: button, initialScale: x.scale}))
+    .on('pointerout', () => unhighlight({sprite: button, initialScale: x.scale}));
+    app.stage.addChild(button);
 });
 
